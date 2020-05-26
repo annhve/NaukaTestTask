@@ -1,14 +1,14 @@
-package model;
+package com.annhve.naukatesttask.model;
 
 import javax.swing.*;
 import java.util.ArrayList;
 
-public class EmployeeListModel extends AbstractListModel<Employee> {
+public class DepartmentListModel extends AbstractListModel<Department> {
     // Коллекция для хранения данных
-    private final ArrayList<Employee> data = new ArrayList<>();
+    private final ArrayList<Department> data = new ArrayList<>();
 
     // Загрузка данных из БД
-    public void setDataSource(ArrayList<Employee> list) {
+    public void setDataSource(ArrayList<Department> list) {
         try {
             // Очистка коллекции
             data.clear();
@@ -30,7 +30,7 @@ public class EmployeeListModel extends AbstractListModel<Employee> {
 
     // Функция извлечения элемента
     @Override
-    public Employee getElementAt(int idx) {
+    public Department getElementAt(int idx) {
         synchronized (data) {
             return data.get(idx);
         }

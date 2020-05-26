@@ -1,4 +1,4 @@
-package employees;
+package com.annhve.naukatesttask.employees;
 
 public interface IEmployeesChangeListener {
     void onRecordAdded();

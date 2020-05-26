@@ -1,7 +1,7 @@
-package departments;
+package com.annhve.naukatesttask.departments;
 
-import model.Department;
-import util.DbConnector;
+import com.annhve.naukatesttask.model.Department;
+import com.annhve.naukatesttask.util.DbConnector;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

@@ -1,5 +1,7 @@
-import util.DbConnector;
-import util.UserRepository;
+package com.annhve.naukatesttask;
+
+import com.annhve.naukatesttask.util.DbConnector;
+import com.annhve.naukatesttask.util.UserRepository;
 
 import javax.swing.*;
 import java.awt.*;

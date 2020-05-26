@@ -1,8 +1,7 @@
-package employees;
+package com.annhve.naukatesttask.departments;
 
-import model.Department;
-import model.Employee;
-import util.DbConnector;
+import com.annhve.naukatesttask.model.Department;
+import com.annhve.naukatesttask.util.DbConnector;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -17,16 +16,16 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmployeesFrame extends JFrame implements IEmployeesChangeListener {
+public class DepartmentsFrame extends JFrame implements IDepartmentsChangeListener {
     private final DbConnector dbConnector;
 
     private JTable table;
     private JButton deleteButton;
     private JButton editButton;
     private JTextField txtFilter;
-    private TableRowSorter<EmployeeTableModel> sorter;
-    private EmployeeTableModel tableModel;
-    private Employee selectedEntity;
+    private TableRowSorter<DepartmentTableModel> sorter;
+    private DepartmentTableModel tableModel;
+    private Department selectedEntity;
 
     private void addComponents(final Container pane) {
         JPanel rootPanel = new JPanel();
@@ -34,7 +33,7 @@ public class EmployeesFrame extends JFrame implements IEmployeesChangeListener {
         rootPanel.setBorder(new EmptyBorder(40, 40, 40, 40));
         GridBagConstraints c = new GridBagConstraints();
 
-        pane.setPreferredSize(new Dimension(1200, 400));
+        pane.setPreferredSize(new Dimension(800, 300));
 
         Container bodyPanel = createBodyPanel();
         Container titlePanel = createTitlePanel();
@@ -53,7 +52,7 @@ public class EmployeesFrame extends JFrame implements IEmployeesChangeListener {
         rootPanel.add(buttonsPanel, c);
 
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.ipady = 300;
+        c.ipady = 200;
         c.weightx = 0.0;
         c.gridwidth = 4;
         c.gridx = 0;
@@ -78,53 +77,33 @@ public class EmployeesFrame extends JFrame implements IEmployeesChangeListener {
         buttonsPanel.setLayout(new FlowLayout());
         JButton addButton = new JButton("Добавить");
         addButton.addActionListener(e -> {
-            try {
-                ArrayList<Department> departments = dbConnector.selectAllDepartments();
-                Department[] departmentsArr = new Department[departments.size()];
-                departmentsArr = departments.toArray(departmentsArr);
-                AddEmployeeFrame frame = new AddEmployeeFrame(dbConnector, this, departmentsArr);
-                frame.createAndShowGui();
-            } catch (Exception exception) {
-                exception.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Ошибка:\n" + exception.getLocalizedMessage());
-            }
+            AddDepartmentFrame frame = new AddDepartmentFrame(dbConnector, this);
+            frame.createAndShowGui();
         });
         deleteButton = new JButton("Удалить");
         deleteButton.setEnabled(false);
         deleteButton.addActionListener(e -> {
             try {
-                if (selectedEntity == null) {
-                    JOptionPane.showMessageDialog(null, "Выберите сотрудника");
-                    return;
-                }
                 System.out.println("deleting " + selectedEntity.getId());
                 int id = selectedEntity.getId();
-                int result = dbConnector.deleteEmployee(id);
+                int result = dbConnector.deleteDepartment(id);
                 if (result > 0) {
                     refreshTableData();
                 }
             } catch (Exception exception) {
                 exception.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Ошибка:\n" + exception.getLocalizedMessage());
+                JOptionPane.showMessageDialog(null, "Не удалось удалить департамент");
             }
         });
         editButton = new JButton("Редактировать");
         editButton.setEnabled(false);
         editButton.addActionListener(e -> {
-            try {
-                if (selectedEntity == null) {
-                    JOptionPane.showMessageDialog(null, "Выберите сотрудника");
-                    return;
-                }
-                ArrayList<Department> departments = dbConnector.selectAllDepartments();
-                Department[] departmentsArr = new Department[departments.size()];
-                departmentsArr = departments.toArray(departmentsArr);
-                EditEmployeeFrame frame = new EditEmployeeFrame(dbConnector, this, departmentsArr, selectedEntity);
-                frame.createAndShowGui();
-            } catch (Exception exception) {
-                exception.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Ошибка:\n" + exception.getLocalizedMessage());
+            if (selectedEntity == null) {
+                JOptionPane.showMessageDialog(null, "Выберите департамент");
+                return;
             }
+            EditDepartmentFrame frame = new EditDepartmentFrame(dbConnector, this, selectedEntity);
+            frame.createAndShowGui();
         });
 
         buttonsPanel.add(addButton);
@@ -135,7 +114,7 @@ public class EmployeesFrame extends JFrame implements IEmployeesChangeListener {
     }
 
     private Container createBodyPanel() {
-        tableModel = new EmployeeTableModel(fetchEntities());
+        tableModel = new DepartmentTableModel(fetchEntities());
         table = new JTable();
         sorter = new TableRowSorter<>(tableModel);
         table.setModel(tableModel);
@@ -148,8 +127,8 @@ public class EmployeesFrame extends JFrame implements IEmployeesChangeListener {
         listSelectionModel.addListSelectionListener(new ListSelectionHandler());
         table.setSelectionModel(listSelectionModel);
         table.addMouseListener(new MouseAdapter() {
+            @Override
             public void mouseClicked(MouseEvent e) {
-                System.out.println("mouse clicked");
                 initDetail(table.getSelectedRow());
             }
         });
@@ -183,12 +162,12 @@ public class EmployeesFrame extends JFrame implements IEmployeesChangeListener {
     /**
      * Create the frame.
      */
-    public EmployeesFrame(DbConnector dbConnector) {
-        super("Сотрудники");
+    public DepartmentsFrame(DbConnector dbConnector) {
+        super("Департаменты");
         this.dbConnector = dbConnector;
 
-        setMinimumSize(new Dimension(800, 400));
-        setMaximumSize(new Dimension(1920, 400));
+        setMinimumSize(new Dimension(800, 300));
+        setMaximumSize(new Dimension(1000, 300));
     }
 
     public void createAndShowGui() {
@@ -198,10 +177,10 @@ public class EmployeesFrame extends JFrame implements IEmployeesChangeListener {
         this.setVisible(true);
     }
 
-    private ArrayList<Employee> fetchEntities() {
-        ArrayList<Employee> list = new ArrayList<>();
+    private ArrayList<Department> fetchEntities() {
+        ArrayList<Department> list = new ArrayList<>();
         try {
-            list.addAll(dbConnector.selectAllEmployees());
+            list.addAll(dbConnector.selectAllDepartments());
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -239,33 +218,21 @@ public class EmployeesFrame extends JFrame implements IEmployeesChangeListener {
         sorter.setRowFilter(rf);
     }
 
-    static class EmployeeTableModel extends AbstractTableModel {
+    static class DepartmentTableModel extends AbstractTableModel {
 
-        List<Employee> list;
+        List<Department> list;
 
         String[] headerList = {
                 "ID",
-                "Имя",
-                "Фамилия",
-                "Дата рождения",
-                "Департамент",
-                "Должность",
-                "Адрес",
-                "Удалённо"
+                "Название"
         };
 
         Class[] classes = {
                 Integer.class,
-                String.class,
-                String.class,
-                String.class,
-                String.class,
-                String.class,
-                String.class,
                 String.class
         };
 
-        public EmployeeTableModel(List<Employee> list) {
+        public DepartmentTableModel(List<Department> list) {
             this.list = list;
         }
 
@@ -286,18 +253,15 @@ public class EmployeesFrame extends JFrame implements IEmployeesChangeListener {
 
         @Override
         public Object getValueAt(int row, int column) {
-            Employee entity = list.get(row);
-            return switch (column) {
-                case 0 -> entity.getId();
-                case 1 -> entity.getName();
-                case 2 -> entity.getSurname();
-                case 3 -> entity.getDateOfBirthday();
-                case 4 -> entity.getDepartment();
-                case 5 -> entity.getPosition();
-                case 6 -> entity.getAddress();
-                case 7 -> entity.getRemoteWork() > 0 ? "Да" : "Нет";
-                default -> "";
-            };
+            Department entity = list.get(row);
+            switch (column) {
+                case 0:
+                    return entity.getId();
+                case 1:
+                    return entity.getName();
+                default:
+                    return "";
+            }
         }
 
         @Override
@@ -307,31 +271,13 @@ public class EmployeesFrame extends JFrame implements IEmployeesChangeListener {
 
         @Override
         public void setValueAt(Object value, int row, int col) {
-            Employee entity = list.get(row);
+            Department entity = list.get(row);
             switch (col) {
                 case 0:
                     entity.setId((Integer) value);
                     break;
                 case 1:
                     entity.setName((String) value);
-                    break;
-                case 2:
-                    entity.setSurname((String) value);
-                    break;
-                case 3:
-                    entity.setDateOfBirthday((String) value);
-                    break;
-                case 4:
-                    entity.setDepartment((String) value);
-                    break;
-                case 5:
-                    entity.setPosition((String) value);
-                    break;
-                case 6:
-                    entity.setAddress((String) value);
-                    break;
-                case 7:
-                    entity.setRemoteWork(((String) value).equalsIgnoreCase("Да") ? 1 : 0);
                     break;
                 default:
                     break;

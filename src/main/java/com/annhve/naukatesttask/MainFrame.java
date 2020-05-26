@@ -1,8 +1,10 @@
-import departments.DepartmentsFrame;
-import employees.EmployeesFrame;
-import model.*;
-import util.DbConnector;
-import util.UserRepository;
+package com.annhve.naukatesttask;
+
+import com.annhve.naukatesttask.departments.DepartmentsFrame;
+import com.annhve.naukatesttask.employees.EmployeesFrame;
+import com.annhve.naukatesttask.model.*;
+import com.annhve.naukatesttask.util.DbConnector;
+import com.annhve.naukatesttask.util.UserRepository;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

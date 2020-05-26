@@ -1,4 +1,4 @@
-package departments;
+package com.annhve.naukatesttask.departments;
 
 public interface IDepartmentsChangeListener {
     void onRecordAdded();

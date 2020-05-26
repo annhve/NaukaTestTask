@@ -1,6 +1,6 @@
-package util;
+package com.annhve.naukatesttask.util;
 
-import model.*;
+import com.annhve.naukatesttask.model.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -252,7 +252,7 @@ public class DbConnector {
         ResultSet rs = statement.getObject(3, ResultSet.class);
         ArrayList<DayInMonth> daysInMonth = new ArrayList<>();
         while (rs.next()) {
-            var dayInMonth = DayInMonth.resultSetToDayInMonth(rs);
+            DayInMonth dayInMonth = DayInMonth.resultSetToDayInMonth(rs);
             daysInMonth.add(dayInMonth);
         }
         rs.close();

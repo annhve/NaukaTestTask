@@ -1,6 +1,8 @@
-import model.User;
-import util.DbConnector;
-import util.UserRepository;
+package com.annhve.naukatesttask;
+
+import com.annhve.naukatesttask.model.User;
+import com.annhve.naukatesttask.util.DbConnector;
+import com.annhve.naukatesttask.util.UserRepository;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

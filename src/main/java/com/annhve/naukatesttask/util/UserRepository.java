@@ -1,6 +1,6 @@
-package util;
+package com.annhve.naukatesttask.util;
 
-import model.User;
+import com.annhve.naukatesttask.model.User;
 
 public class UserRepository {
     private User loggedUser;

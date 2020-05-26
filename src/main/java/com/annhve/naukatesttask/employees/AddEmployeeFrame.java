@@ -1,10 +1,10 @@
-package employees;
+package com.annhve.naukatesttask.employees;
 
-import model.Department;
+import com.annhve.naukatesttask.model.Department;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
-import util.DbConnector;
+import com.annhve.naukatesttask.util.DbConnector;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -58,7 +58,7 @@ public class AddEmployeeFrame extends JFrame {
         datePicker.setMaximumSize(new Dimension(300, 30));
         datePicker.setAlignmentX(Component.CENTER_ALIGNMENT);
         datePicker.addActionListener(e -> {
-            var d = model.getValue();
+            java.util.Date d = model.getValue();
             selectedDate = new Date(d.getTime());
         });
 

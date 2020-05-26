@@ -1,4 +1,4 @@
-package model;
+package com.annhve.naukatesttask.model;
 
 import java.util.Objects;
 
