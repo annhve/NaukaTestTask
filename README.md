@@ -38,3 +38,9 @@ Here:
 * __XE__ is a server SID
 * __somelogin__ is your username at db server
 * __somepassword__ is your password at db server
+
+# DB Server configuration
+To quickly restore DB used for this project, there is a export file `create_db.sql` in root folder. Just run this file in your SQL editor. _Note: this file uses user name C##ANNA, so it should be changed with your DB server username._
+
+# Appendix. DB ER Diagram
+![ER Diagram](db_er_diagram.png)
